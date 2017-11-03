@@ -1,0 +1,102 @@
+<import src="../templates/templates.wxml" />
+<view class="container" style="padding:0px 0px;background:#f4f4f4">
+    <loading hidden="{{ !loading }}">加载中...</loading>
+
+    <image class="background" src="{{bookInfo.image_large}}" mode="aspectFill" />
+    <image class="poster" src="{{bookInfo.image_large}}" bindtap='previewImage' mode="aspectFit" />
+    <view style="padding:0px 0px;width:95%;margin:0 auto">
+        <view class="meta">
+            <text class="title">{{bookInfo.book_name}}</text>
+            <text class="info">作者： {{bookInfo.writer}} </text>
+            <text class="info">ISBN：{{bookInfo.ISBN10}}、{{bookInfo.ISBN13}}</text>
+            <!-- <text class="info">时间：30天</text> -->
+            <!-- <view class="info">
+                        <text style="float:left">书主：</text>
+                        <picker bindchange="bindPickerChange" style="width:100px;float:left" value="{{index}}" range="{{owner}}">
+                            <view class="picker">
+                                {{owner[index]}}
+                            </view>
+                        </picker>
+                    </view> -->
+            <text class="info" wx:if="{{book_type == 0}}">书主：{{bookInfo.userName?bookInfo.userName:bookInfo.nickName}}</text>
+            <text class="info" wx:elif="{{book_type == 1}}">自营点：{{bookInfo.pilot_name?bookInfo.pilot_name+'自营点':bookInfo.location}}</text>
+            <text class="info">出版社：{{bookInfo.book_press}}</text>
+            <text class="info">出版日期：{{bookInfo.publish_date}}</text>
+            <text class="info">所需积分：{{bookInfo.price}}分</text>
+        </view>
+        <view class="summary">
+            <text class="label">摘要：</text>
+            <text class="content" style="line-height:25px;width:80%;margin:0 auto">{{bookInfo.introduction}}</text>
+        </view>
+    </view>
+</view>
+<view class="comment" style="width：97%;margin: 0 1.5%;margin-bottom:60px">
+    <view wx:if="{{commentInfo != 'none'}}" wx:for="{{commentInfo}}" wx:for-index="index" wx:for-item="comment">
+        <template is="commentTemp" data="{{comment}}" />
+    </view>
+    <view style='height:100px;width:100%'></view>
+</view>
+<view class="block" style="width:100%;height:100px;"></view>
+<view id="footer" style="display:block;bottom:0px;position:fixed;width:100%;height:50px;z-index:1000px;background:#fff">
+    <view type="submit" bindtap="cancelLove" wx:if="{{bookInfo.haveLoved ==1 || haveLoved ==1}}" style="width:20%;border-right: 2px solid #f0f0f0;" class="bottom-operate">
+        <view>
+            <image src='../../images/like-active.png' class='like'></image>
+        </view>
+        <view>
+            <span>取消</span>
+        </view>
+    </view>
+    <view type="submit" bindtap="addLove" wx:elif="{{bookInfo.haveLoved !=1 || haveLoved ==0}}" style="width:20%;border-right: 2px solid #f0f0f0;" class="bottom-operate">
+        <view>
+            <image src='../../images/like.png' class='like'></image>
+        </view>
+        <view>
+            <span>喜欢</span>
+        </view>
+    </view>
+    <view type="submit" bindtap="cancelSeen" wx:if="{{bookInfo.haveRead ==1 || haveRead == 1}}" style="width:30%;" class="bottom-operate">
+        <view>
+            <image src='../../images/see-active.png' class='like'></image>
+        </view>
+        <view>
+            <span>取消</span>
+        </view>
+    </view>
+    <view type="submit" bindtap="writeCard" wx:elif="{{bookInfo.haveRead !=1 || haveRead == 0}}" style="width:30%;color:#000" class="bottom-operate">
+        <view>
+            <image src='../../images/see.png' class='like'></image>
+        </view>
+        <view>
+            <span>看过</span>
+        </view>
+    </view>
+    <view type="submit" bindtap="borrowBook" style="width:48%;background:#75a8f9;float:right;line-height:50px;font-size:15px;padding-top:0px;color:#fff" class="bottom-operate">
+        借阅
+    </view>
+</view>
+<!--分类 start-->
+<scroll-view style="height:100%" id="catewrap" scroll-into-view="c2" scroll-y="true" hidden="{{!cateisShow}}">
+    <view class="close" bindtap="togglePtype" id="closecatelist"></view>
+    <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <text class="cl_ico_checked cl_ico"></text> {{bookInfo.book_name}}
+    </view>
+    <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <text style="float:left;width:100px;line-height:47px">书主</text>
+        <!-- <picker bindchange="bindPickerChange" style="width:100px;float:right" value="{{index}}" range="{{owner}}">
+            <view class="picker">
+                {{owner[index]}}
+            </view>
+        </picker> -->
+        <text class="rightText">{{bookInfo.userName}}</text>
+    </view>
+    <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <text style="float:left;width:100px;line-height:47px">允许借阅</text>
+        <input type="text" value="{{bookInfo.keep_time}}天" bindinput="setBorrowDays" id="uploadDays" style="float:right;width:200px;height:47px;line-height:47px;text-align:right;margin-right:30px" />
+    </view>
+    <form name='pushMsgFm' report-submit="true" bindsubmit="affirmBorrowBook">
+        <button form-type="submit" style="width:95%;margin:0 auto;border-radius:5px;height:50px;background: #FE552E;text-align: center;color:#fff;position:fixed;bottom:0px" class="btn">
+            确认借阅
+        </button>
+    </form>
+</scroll-view>
+<!--分类 end-->

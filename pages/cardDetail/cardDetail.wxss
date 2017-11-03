@@ -1,0 +1,58 @@
+/**图书列表**/
+
+.book_list {
+    width: 94%;
+    padding: 2px 2px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.book-name {
+    font-size: 18px;
+}
+
+.card_content {
+    text-indent: 2em;
+    font-size: 16px;
+    line-height: 30px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.operate {
+    width: 89%;
+    margin: 0 auto;
+    height: 44px;
+    background: #fff;
+    padding: 12px 12px;
+}
+
+.comment1-description {
+    text-align: center;
+}
+
+.comment1-description1 {
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #333;
+    margin-left: 30rpx;
+}
+
+.half {
+    text-align: center;
+}
+
+.star-image {
+    top: 90rpx;
+    width: 50rpx;
+    height: 50rpx;
+    src: "../../images/normal.png";
+}
+
+.item1 {
+    position: absolute;
+    top: 5rpx;
+    width: 24rpx;
+    height: 50rpx;
+}

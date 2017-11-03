@@ -1,0 +1,91 @@
+<loading hidden="{{ !loading }}">加载中...</loading>
+<view style="width:98%;margin:10px 1%">
+    <view class="page-section userinfo">
+        <!-- <view class="page-body-info">
+            <view class="weui-cells__tips">提示：请上传正确的用户信息，才能通过认证！！！</view>
+            <view style='font-size:15px;margin-top:5px;'>
+                请上传校园卡或者教工卡
+            </view>
+            <block wx:if="{{pictureFiles}}">
+                <image src="{{pictureFiles}}" class="image" mode="aspectFit" bindtap="changePicture"></image>
+            </block>
+
+            <block wx:else>
+                <view class="image-plus image-plus-nb" bindtap="chooseImage">
+                    <view class="image-plus-horizontal"></view>
+                    <view class="image-plus-vertical"></view>
+                </view>
+                <view class="image-plus-text">选择图片</view>
+            </block>
+
+        </view> -->
+        <image class="userinfo-avatar" src="{{userInfo.favicon}}" background-size="cover"></image>
+    </view>
+    <view class="name item">
+        <image src="../../images/name.png" class="item_ico"></image>
+        <text>姓名</text>
+        <input class="value-right" type="text" bindinput="setName" value="{{userInfo.userName?userInfo.userName:''}}" placeholder="请输入真实姓名" />
+    </view>
+    <view class="h1"></view>
+    <!-- <view class="school item">
+        <image src="../../images/school.png" class="item_ico"></image>
+        <text>学校</text>
+        <picker bindchange="bindPickerSchoolChange" class="value-right" value="{{schoolIndex}}" range="{{school}}">
+            <view class="picker">
+                {{school[schoolIndex]}}
+            </view>
+        </picker>
+    </view>
+    <view class="h1"></view>
+    <view class="major item">
+        <image src="../../images/specialty.png" class="item_ico"></image>
+        <text>专业</text>
+        <input class="value-right" type="text" bindinput="setMajor" value="{{userInfo.userClass?userInfo.userClass:''}}" placeholder="请输入所在学院" />
+    </view>
+    <view class="h1"></view> -->
+    <view class="phone item">
+        <image src="../../images/telephone.png" class="item_ico"></image>
+        <text>联系方式</text>
+        <input class="value-right" type="text" bindinput="setPhone" value="{{userInfo.phoneNumber?userInfo.phoneNumber:''}}" placeholder="请输入联系方式" />
+    </view>
+    <view class="h1"></view>
+    <view class="phone item">
+        <image src="../../images/telephone.png" class="item_ico"></image>
+        <text>邮箱</text>
+        <input class="value-right" type="text" bindinput="setEMail" value="{{userInfo.eMail?userInfo.eMail:''}}" placeholder="请输入邮箱" />
+    </view>
+    <view class="h1"></view>
+    <!-- <view class="status item">
+        <image src="../../images/status.png" class="item_ico"></image>
+        <text>学号/工号</text>
+        <input class="value-right" type="text" bindinput="setCardId" value="{{userInfo.studentCard?userInfo.studentCard:''}}" placeholder="请输入学号/教职工编号" />
+    </view>
+    <view class="h1"></view> -->
+    <view id="footer" style="width:98%;margin:25px 1%;">
+    <button bindtap="toAuth" style="color:#fff;height:50px;background: #33CCFF;">
+        认证
+    </button>
+</view>
+</view>
+
+
+<!--分类 start-->
+<scroll-view style="height:100%" id="catewrap" scroll-into-view="c2" scroll-y="true" hidden="{{!cateisShow}}">
+    <view class="close" bindtap="togglePtype" id="closecatelist"></view>
+    <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <!-- <text class="cl_ico_checked cl_ico"></text> -->照片列表
+    </view>
+    <!-- <view style="width:100%;">
+        <view class="cl_list cl_ico" wx:for="{{pictureFiles}}" wx:for-item="image">
+            <text class="cl_ico_checked cl_ico"></text>
+            <image data-src="{{image}}" style="height:240rpx" mode="scaleToFill" src="{{image==''?'../../images/user_defaulthead@2x.png':image}}"></image>
+        </view>
+        <view style="clear:both"></view>
+    </view> -->
+
+    <button style="width:95%;margin:0 auto;border-radius:5px;height:50px;background: #FE552E;text-align: center;color:#fff;position:fixed;bottom:0px" class="btn">
+        确认
+    </button>
+
+</scroll-view>
+<!--分类 end-->

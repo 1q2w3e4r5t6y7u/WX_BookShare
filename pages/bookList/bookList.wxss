@@ -1,0 +1,55 @@
+.list-tmp {
+    background: #f4f4f4;
+    margin-bottom: 10rpx;
+    height: 240rpx;
+    width:97%;
+    margin: 0 auto;
+}
+
+.list-info {
+    background: #fff;
+    float: left;
+    height: 90%;
+    width: 96%;
+    text-align: left;
+    margin: 5px 2%;
+    border-radius: 3px;
+}
+
+.item {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.list-name {
+    font-size: 20px;
+    line-height: 60rpx;
+    margin: 40px 140px 50px 20px;
+    padding-top: 30px;
+}
+
+.number {
+    font-size: 15px;
+    color: #949494;
+    width: 25%;
+    margin-right: 20px;
+}
+
+.describe {
+    font-size: 15px;
+    margin: 20px 20px;
+    text-align: center
+}
+
+.new {
+    padding:10px 20px 15px 20px;
+    height: 40px;
+    text-align: center;
+    width:250px;
+    margin: 0 auto;
+}
+.logo{
+    height:40px;
+    width:40px;
+    vertical-align: middle; 
+}

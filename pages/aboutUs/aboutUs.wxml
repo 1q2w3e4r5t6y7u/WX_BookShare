@@ -1,0 +1,50 @@
+ <loading hidden="{{ !loading }}">加载中...</loading>
+<view style="margin:10px 15px 10px 15px">
+    <view class="photo item" style="height:300px;line-height: 24px;">
+        <view class="photo-box" style="width:100px;margin:0 auto;padding-top:10px;">
+            <image src="../../images/logo.png" style="border-radius: 100px" class="personal_logo" id="personal_logo"></image>
+        </view>
+        <view class="feedbackText">
+            <text>阅享平台是首款基于社区的儿童读物的共享借阅类平台，以盘活闲置图书资源为己任，提倡循环阅读、环保阅读，通过图书循环经济制度创新继续实现闲散图书资源的价值，降低有阅读需求的孩子的读书成本。同时，我们希望通过共享软件的聚合功能，搭建一个学习交流平台，让有相同兴趣的孩子组成书友会，引导儿童多读书、读好书。</text>
+        </view>
+    </view>
+    <view class="h1"></view>
+    <view class="item" style='padding:5px 15px 0px 15px;'>
+        <text style='margin-left:10px;margin-top:5px;'>团队地址:</text>
+        <span class="value-right" bindtap="openLocation">河北工业大学北辰校区</span>
+    </view>
+    <view class="h1"></view>
+    <view class="item" style='padding:5px 5%;'>
+        <button class='submit' bindtap="contractMe" type="submit">
+            联系我们
+        </button>
+    </view>
+</view> 
+<view class="weui-cells__tips" style="position:fixed;bottom:10px;text-align:center;width:100%">提示：如有问题可以通过意见反馈或者电话联系我们！</view>
+<!-- <import src="../../components/prompt/prompt.wxml"/>
+
+<view class="page">
+    <view class="page__bd">
+        <view class="weui-tab">
+            <view class="weui-navbar">
+                <block wx:for-items="{{ tabs}}" wx:key="{{ index }}">
+                    <view id="{{ index }}" class="weui-navbar__item {{ activeIndex == index ? 'weui-bar__item_on' : '' }}" bindtap="tabClick">
+                        <view class="weui-navbar__title">{{ item }}</view>
+                    </view>
+                </block>
+                <view class="weui-navbar__slider" style="left: {{ sliderLeft }}px; transform: translateX({{ sliderOffset }}px); -webkit-transform: translateX({{ sliderOffset }}px);"></view>
+            </view>
+            <view class="weui-tab__panel">
+                <view class="weui-tab__content" hidden="{{ activeIndex != 0 }}">
+                	<template is="prompt" data="{{ ...$wux.prompt.msg1 }}"/>
+                </view>
+                <view class="weui-tab__content" hidden="{{ activeIndex != 1 }}">
+                	<template is="prompt" data="{{ ...$wux.prompt.msg2 }}"/>
+                </view>
+                <view class="weui-tab__content" hidden="{{ activeIndex != 2 }}">
+                	<template is="prompt" data="{{ ...$wux.prompt.msg3 }}"/>
+                </view>
+            </view>
+        </view>
+    </view>
+</view> -->

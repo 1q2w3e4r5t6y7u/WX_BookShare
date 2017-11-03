@@ -1,0 +1,80 @@
+<!--分类 start-->
+ <loading hidden="{{ !loading }}">加载中...</loading> 
+
+<view class="container">
+    <view class="h10"></view>
+    <view class="thirdblock">
+        <view class="item">
+            <span>书名:</span>
+            <text class="rightText">{{bookInfo.book_name}}</text>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>作者:</span>
+            <text class="rightText">{{bookInfo.writer}}</text>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>ISBN:</span>
+            <text class="rightText">{{bookInfo.ISBN13}}</text>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>可借天数:</span>
+            <input class='rightText' type="number" value="{{bookInfo.keep_time}}" bindinput="setDays" />
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>位置：</span>
+            <view class="rightText" bindtap="chooseLocation">
+                <view style="height:47px;line-height:47px;margin-left:10px;margin-top:3px;float:right">
+                    <image style='height:20px;width:20px;' src='../../images/location.png'></image>
+                </view>
+                <view>{{location?location:"请选择位置"}}</view>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <!-- <span>适龄：</span> -->
+            <!-- <input type="number" class="rightText" value="{{}}" bindinput="" /> -->
+            <span>适龄：</span>
+            <view class="section">
+                <view style="height:47px;line-height:47px;margin-left:10px;float:right">
+                    <image style='height:10px;width:10px' src='../../images/triangle.png'></image>
+                </view>
+                <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+                    <view class="picker">
+                        {{array[index]}}
+                    </view>
+                </picker>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>书评：</span>
+            <view class='half'>
+                <block wx:for="{{stars}}">
+                    <image class="star-image" style="left: {{item*80}}rpx" src="{{key1 > item ?(key1-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+                        <view class="item1" style="left:0rpx" data-key="{{item+0.5}}" bindtap="selectLeft1"></view>
+                        <view class="item1" style="left:40rpx" data-key="{{item+1}}" bindtap="selectRight1"></view>
+                    </image>
+
+                </block>
+                <view style="clear:both"></view>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="comment">
+            <textarea style="line-height:20px;height:80px;width:100%" type='text' bindinput="setContent" value="{{card_content}}" placeholder-style="padding-top:10px" maxlength="-1" placeholder='请写出您对此书的评价~' />
+        </view>
+        <view class="h1"></view>
+        <view class="h1"></view>
+        <view class="item" style='height:55px;'>
+            <form name='pushMsgFm' report-submit="true" data-canshareid="{{bookInfo.can_share_id}}" bindsubmit="saveKeepTime">
+                <button form-type="submit" style="width:95%;margin:10px 5px 10px 0px;background: #FE552E;color:#fff;bottom:0px" class="btn">
+                    完成编辑
+                </button>
+            </form>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,101 @@
+<!-- 第一块 -->
+<loading hidden="{{ !loading }}">加载中...</loading>
+<view class="container">
+    <view class="firstblock" style="margin-top:10px">
+        <view class="item">
+            <span>图书：</span>
+            <view class="rightText" style="width:200px;height:47px;line-height:47px;" bindtap="screenISBN">
+                <button type="primary" style="background:#33ccff;width:90%;float:right;font-size:12px;margin-top:10px" disabled="{{disabled2}}"> 扫描要上传的图书 </button>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>书名:</span>
+            <input type="text" class="rightText" value="{{bookInfo.title}}" bindinput="setBorrowDays" placeholder="请输入书名" />
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>作者:</span>
+            <input type="text" class="rightText" value="{{bookInfo.author[0]}}" bindinput="setBorrowDays" placeholder="请输入作者" />
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>ISBN:</span>
+            <input type="number" class="rightText" value="{{bookInfo.isbn13}}" bindinput="setBorrowDays" placeholder="请输入ISBN号" />
+        </view>
+
+
+    </view>
+    <!-- 第二块 -->
+    <view class="h10"></view>
+    <view class="thirdblock">
+        <view class="item">
+            <span>位置：</span>
+            <view style='float:right;display:flex;'>
+                <view class="rightText" style='text-align:right;margin-right:0px;' bindtap="chooseLocation">
+                    <view style="padding-right:10px;">{{location?location:"请选择位置"}}</view>
+                </view>
+                <view style="height:47px;line-height:47px;width:20px;margin-top:3px;margin-right:30px;">
+                    <image style='height:20px;width:20px;' src='../../images/location.png'></image>
+                </view>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <view><span>类别：</span></view>
+            <picker bindchange="bindSortsChange" style="width:100px;float:right;margin-top:-46px" class='rightText' value="{{sortsIndex}}" range="{{sortsNameArray}}">
+            <view class="picker">
+                {{sortsNameArray[sortsIndex]}}
+            </view>
+        </picker>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <view><span style="font-size:10px;">可借天数：</span></view>
+            <input style="margin-top:-46px" type="number" class="rightText" value="{{uploadDays}}" bindinput="setDays" />
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <!-- <span>适龄：</span> -->
+            <!-- <input type="number" class="rightText" value="{{}}" bindinput="" /> -->
+            <span>适龄：</span>
+            <view class="section" style="margin-top:-46px">
+                <view style="height:47px;line-height:47px;margin-left:10px;float:right">
+                    <image style='height:10px;width:10px' src='../../images/triangle.png'></image>
+                </view>
+                <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+                    <view class="picker">
+                        {{array[index]}}
+                    </view>
+                </picker>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <span>书评：</span>
+            <view class='half'>
+                <block wx:for="{{stars}}">
+                    <image class="star-image" style="left: {{item*60}}rpx" src="{{key1 > item ?(key1-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+                        <view class="item1" style="left:0rpx" data-key="{{item+0.5}}" bindtap="selectLeft1"></view>
+                        <view class="item1" style="left:30rpx" data-key="{{item+1}}" bindtap="selectRight1"></view>
+                    </image>
+
+                </block>
+                <view style="clear:both"></view>
+            </view>
+        </view>
+        <view class="h1"></view>
+        <view class="comment">
+            <textarea style="line-height:20px;height:80px;width:100%" type='text' bindinput="setContent" placeholder-style="padding-top:10px" maxlength="-1" placeholder='请写出您对此书的评价~' />
+        </view>
+        <view class="h1"></view>
+        <view class="comment1">
+            <span>若没有该书数据，请在扫描ISBN码后手动填写书名和作者，我们会尽快完善详细信息。</span>
+        </view>
+        <view class="h1"></view>
+        <view class="item">
+            <button type="primary" size="mini" style="float:left;font-size:12px;margin-top:10px;background:red" bindtap="continueShare"> 继续分享 </button>
+            <button type="primary" size="mini" style="float:right;font-size:12px;margin-top:10px;margin-right:10px" bindtap="shareBook"> 完成分享 </button>
+        </view>
+    </view>
+</view>

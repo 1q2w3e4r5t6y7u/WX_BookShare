@@ -1,0 +1,50 @@
+.box {
+    margin: 10px 15px;
+}
+
+.item {
+    font-size: 15px;
+    line-height: 40px;
+    margin-bottom: 15rpx;
+    padding: 2rpx 15rpx;
+    background-color: #fff;
+    /* height: 240rpx; */
+    border-radius: 5px;
+}
+
+.txt {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.comment1-description {
+    margin-top: 35rpx;
+}
+
+.comment1-description1 {
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #333;
+    margin-left: 30rpx;
+}
+
+.half {
+    position: absolute;
+     margin-left: 180rpx; 
+    margin-top: -45rpx;
+}
+
+.star-image {
+    position: absolute;
+    top: 50rpx;
+    width: 50rpx;
+    height: 50rpx;
+    src: "../../images/normal.png";
+}
+
+.item1 {
+    position: absolute;
+    top: 5rpx;
+    width: 25rpx;
+    height: 50rpx;
+}

@@ -1,0 +1,779 @@
+<!-- 首页 -->
+<!-- 列表形式的页面 -->
+<template name="indexList">
+    <view class="book-tmp" bindtap="detail" bindlongtap='checkDetail' data-bookId="{{book.book_id}}" data-type="{{book.type}}" data-canShareID ="{{book.can_share_id}}">
+        <image src="{{book.book_image}}" class="book-image"></image>
+        <view class="book-info">
+            <view class="book-name">{{book.book_name}}—{{book.writer}}</view>
+            <view class="book-applier">
+                <view class="left" wx:if="{{book.type == 0}}">
+                    <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:'显示失败'}}
+                </view>
+                <view class="left" wx:elif="{{book.type == 1}}">
+                    <image src="../../images/applier.png" style="width:15px;height:15px;"></image> 自营点
+                </view>
+                <view class="right">
+                    <image src="../../images/location.png" style="width:15px;height:15px;"></image> {{book.location}}
+                </view>
+            </view>
+        </view>
+        <view class="clear-both"></view>
+    </view>
+</template>
+
+<!-- 块状形式的页面 -->
+<template name="indexListNew">
+    <view bindtap="detail" bindlongtap='checkDetail' data-bookId="{{book.book_id}}" data-type="{{book.type}}" data-canShareID ="{{book.can_share_id}}">
+        <view style='margin: 0 auto'>
+                <view>
+                    <image src='{{book.book_image}}' style="width:100%;margin: 0 auto" mode='widthFix'></image>
+                </view>
+                <view style='width:100%;height:30px;line-height:30px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size:12px;text-align:center'>{{book.book_name}}</view>
+            </view>
+    </view>
+</template>
+<!-- 首页 -->
+
+<!-- 借出页面模板 -->
+    <!-- 响应模板 -->
+    <template name="borrowApplyLoading">
+        <view class="book-tmp" bindtap="detail" wx:if="{{book.if_agree== 0 && book.if_refuse== 0}}">
+            <image src="{{book.book_image}}" class="book-image"></image>
+            <view class="book-info">
+                <view class="book-apply-name">
+                    {{book.book_name}}
+                    <!-- <view class="subtitle">
+                                未响应
+                            </view> -->
+                </view>
+                <view class="book-applier">
+                    <view class="left">
+                        <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                    </view>
+                    <view class="right">
+                        <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.add_at}}
+                    </view>
+                </view>
+                <view class="operate-box">
+                    <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-canshareid="{{book.can_share_id}}" data-openid="{{book.openId}}" bindsubmit="refuseApply">
+                        <button form-type="submit" class="refuse">
+                                    拒绝
+                                </button>
+
+                    </form>
+                    <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-openid="{{book.openId}}" bindsubmit="agreeApply">
+                        <button form-type="submit" class="agree">
+                                    同意
+                                </button>
+                    </form>
+                </view>
+            </view>
+            <view class="clear-both"></view>
+        </view>
+        </template>
+    <!-- 等待响应结束 -->
+
+    <!-- 已同意 但未借出模板 扫码升级 -->
+    <template name="agreeApplyNoLoan">
+                <view class="book-tmp" bindtap="detail" wx:if="{{book.if_agree== 1 && book.if_loan == 0 && book.if_refuse== 0}}">
+                    <image src="{{book.book_image}}" class="book-image"></image>
+                    <view class="book-info">
+                        <view class="book-apply-name">
+                            {{book.book_name}}
+                        </view>
+                        <view class="book-applier">
+                            <view class="left">
+                                <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                            </view>
+                            <view class="right">
+                                <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.agree_at}}
+                            </view>
+                        </view>
+                        <view class="operate-box">
+                            <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-canshareid="{{book.can_share_id}}" data-openid="{{book.openId}}" bindsubmit="refuseApply">
+                                <button form-type="submit" class="refuse">
+                                    拒绝
+                                </button>
+                            </form>
+                            <!-- <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-openid="{{book.openId}}" bindsubmit="affirmLoan">
+                                <button form-type="submit" class="agree">
+                                    确认借出
+                                </button>
+                            </form> -->
+                            <form name='pushMsgFm' report-submit="true" data-price="{{book.price}}" data-sharingid="{{book.sharing_id}}" data-openid="{{book.openId}}" bindsubmit="screenQRcode">
+                                <button form-type="submit" class="agree">
+                                    扫码确认
+                                </button>
+                            </form>
+                        </view>
+                    </view>
+                    <view class="clear-both"></view>
+                </view>
+                </template>
+    <!-- 已同意 但未借出模板 -->
+
+    <!-- 已同意 已借出模板 -->
+    <template name="agreeApplyAndLoan">
+                <view class="book-tmp" bindtap="detail" wx:if="{{book.if_agree== 1 && book.if_loan == 1 && book.if_refuse== 0}}">
+                    <image src="{{book.book_image}}" class="book-image"></image>
+                    <view class="book-info">
+                        <view class="book-apply-name">
+                            {{book.book_name}}
+                            
+                        </view>
+                        <view class="book-applier">
+                            <view class="left">
+                                <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                            </view>
+                            <view class="right">
+                                <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.loan_at}}
+                            </view>
+                        </view>
+                        <view class="operate-box">
+                            <form name='pushMsgFm' report-submit="true" data-agree="1" data-sharingid="{{book.sharing_id}}" data-openid="{{book.openId}}">
+                                <button form-type="submit" class="agree">
+                                    已经借出
+                                </button>
+                            </form>
+                        </view>
+                    </view>
+                    <view class="clear-both"></view>
+                </view>
+                </template>
+    <!-- 已同意 已借出模板 -->
+
+    <!-- 拒绝模板 -->
+    <template name="refuseApply">
+                <view class="book-tmp" bindtap="detail" wx:if="{{book.if_refuse== 1}}">
+                    <image src="{{book.book_image}}" class="book-image"></image>
+                    <view class="book-info" style="position: relative;">
+                        <view class="book-name">
+                            {{book.book_name}}
+                        </view>
+                        <view class="seal">
+                            <image src="../../images/refuse.png"></image>
+                        </view>
+                        <view class="book-author">
+                            <view class="left">
+                                <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                            </view>
+                            <view class="right">
+                                <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.refuse_at}}
+                            </view>
+                        </view>
+                    </view>
+                    <view class="clear-both"></view>
+                </view>
+                </template>
+    <!-- 拒绝模板结束 -->
+
+    <!-- 完成模板 -->
+    <template name="finishApply">
+                <view class="book-tmp" bindtap="detail" wx:if="{{book.if_return== 1 && book.if_refuse== 0}}">
+                    <image src="{{book.book_image}}" class="book-image"></image>
+                    <view class="book-info" style="position:relative">
+                        <view class="book-name">
+                            {{book.book_name}}
+                            <view class="seal">
+                                <image src="../../images/finish.png"></image>
+                            </view>
+                        </view>
+                        <view class="book-author">
+                            <view class="left">
+                                <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                            </view>
+                            <view class="right">
+                                <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.return_at}}
+                            </view>
+                        </view>
+                    </view>
+                    <view class="clear-both"></view>
+                </view>
+                </template>
+    <!-- 完成模板结束 -->
+
+<!-- 借出页面模板 -->
+
+
+<!-- 借入页面模板 -->
+
+    <!-- 等待响应模板 -->
+    <template name="borrowInLoading">
+        <view class="book-tmp" bindtap="detail" wx:if="{{book.if_agree== 0 && book.if_refuse==0}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-name">
+                        {{book.book_name}}
+                        <view class="subtitle" style="color:red">
+                            等待中
+                        </view>
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> 08-25 10:20
+                        </view>
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+    </template>
+    <!-- 等待响应模板 -->
+
+    <!-- 同意模板 书主未借出 联系书主模板 扫码升级-->
+    <template name="contactOwner">
+        <view class="book-tmp" bindtap="detail" wx:if="{{book.if_agree== 1 && book.if_loan==0 && book.if_refuse==0}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-apply-name">
+                        {{book.book_name}}
+                        <!-- <view class="subtitle">
+                            已同意
+                        </view> -->
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> 08-25 10:20
+                        </view>
+                    </view>
+                    <view class="operate-box">
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-phonenum="{{book.phoneNumber}}" bindsubmit="callOwner">
+                            <button form-type="submit" class="agree">
+                                联系书主
+                            </button>
+                        </form>
+
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-openid="{{book.openId}}" bindsubmit="creatBorrowQRcode">
+                            <button form-type="submit" class="refuse">
+                                出示二维码
+                            </button>
+                        </form>
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+    </template>
+    <!-- 同意模板 书主未借出 联系书主模板-->
+
+    <!-- 同意模板 书主借出 确认收到书-->
+    <template name="affirmGetBook">
+        <view class="book-tmp" bindtap="detail" wx:if="{{book.if_agree== 1 && book.if_loan==1 && book.if_refuse==0}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-apply-name">
+                        {{book.book_name}}
+                        <view class="subtitle">
+                            已借出
+                        </view>
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> 08-25 10:20
+                        </view>
+                    </view>
+                    <view class="operate-box">
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-phonenum="{{book.phoneNumber}}" bindtap="finishBorrow">
+                            <button form-type="submit" class="agree">
+                                借书完成
+                            </button>
+                        </form>
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+    </template>
+    <!-- 同意模板 书主借出 确认收到书-->
+
+    <!-- 拒绝模板  -->
+    <template name="refuseBorrowIn">
+        <view class="book-tmp" bindtap="detail" wx:if="{{book.if_refuse== 1}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info" style="position: relative;">
+                    <view class="book-name">
+                        {{book.book_name}}
+                    </view>
+                    <view class="seal">
+                        <image src="../../images/refuse.png"></image>
+                    </view>
+                    <view class="book-author">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> 08-25 10:20
+                        </view>
+                    </view>
+                </view>
+            </view>
+    </template>
+    <!-- 拒绝模板  -->
+
+    <!-- 完成模板  -->
+    <template name="finishBorrowIn">
+        <view class="book-tmp" bindtap="detail" wx:if="{{book.if_return== 1 && book.if_refuse== 0}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info" style="position:relative">
+                    <view class="book-name">
+                        {{book.book_name}}
+                        <view class="seal">
+                            <image src="../../images/finish.png"></image>
+                        </view>
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> 08-25 10:20
+                        </view>
+                    </view>
+                </view>
+            </view>
+    </template>
+    <!-- 完成模板  -->
+
+<!-- 借入模板 -->
+
+
+<!-- 归还页面模板 -->
+    <!-- 等待归还模板 -->
+    <template name="returnBackContact">
+            <view class="book-tmp" bindtap="detail" wx:if="{{book.if_affirm == 0 && book.if_refuse==0 && book.if_finish==1}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-name">
+                        {{book.book_name}}
+                        <view class="subtitle" style="color:red">
+                            待归还
+                        </view>
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.need_return_at}}
+                        </view>
+                    </view>
+                    <view class="operate-box">
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-phonenum="{{book.phoneNumber}}" bindsubmit="callOwner">
+                            <button form-type="submit" class="refuse">
+                                联系书主
+                            </button>
+                        </form>
+                         <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-bookid="{{book.book_id}}" bindsubmit="screenQRcode">
+                            <button form-type="submit" class="agree">
+                                归还
+                            </button>
+                        </form> 
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 等待归还模板 -->
+
+    <!-- 借书人确认归还模板 -->
+    <template name="borrowAffirmReturn">
+            <view class="book-tmp" bindtap="detail" wx:if="{{book.if_affirm== 1 && book.if_refuse==0 && book.if_return==0}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-name">
+                        {{book.book_name}}
+                        <view class="subtitle" style="color:red">
+                            待确认归还
+                        </view>
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> 08-25 10:20
+                        </view>
+                    </view>
+                    <view class="operate-box">
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-canshareid="{{book.can_share_id}}" data-phonenum="{{book.phoneNumber}}" bindsubmit="borrowAffirmReturn">
+                            <button form-type="submit" class="agree">
+                                确认归还
+                            </button>
+                        </form>
+                        <!-- <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" bindsubmit="returnBack">
+                            <button form-type="submit" class="agree">
+                                归还
+                            </button>
+                        </form> -->
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 借书人确认归还模板 -->
+
+<!-- 归还页面模板 -->
+
+
+<!-- 收书页面模板 -->
+
+    <!-- 书主确认归还模板 -->
+    <template name="owerAffirmGet">
+            <view class="book-tmp" bindtap="detail" wx:if="{{book.if_affirm == 0 && book.if_refuse==0 && book.if_finish==1}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-name">
+                        {{book.book_name}}
+                        <view class="subtitle" style="color:red">
+                            待收书
+                        </view>
+                    </view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.need_return_at}}
+                        </view>
+                    </view>
+                    <view class="operate-box">
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-phonenum="{{book.phoneNumber}}" bindsubmit="callOwner">
+                            <button form-type="submit" class="refuse">
+                                联系借书人
+                            </button>
+                        </form>
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-phonenum="{{book.phoneNumber}}" bindsubmit="creatBorrowQRcode">
+                            <button form-type="submit" class="agree">
+                                收书码
+                            </button>
+                        </form>
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 书主确认归还模板 -->
+
+<!-- 收书页面模板 -->
+
+
+<!-- 操作 管理图书页面 -->
+
+    <!-- 下线模板 -->
+    <template name="bookDownline">
+        <view class="book-tmp" bindtap="detail">
+            <image src="{{book.book_image}}" class="book-image"></image>
+            <view class="book-info">
+                <view class="book-apply-name">
+                    {{book.book_name}}
+                    <!-- <view class="subtitle">
+                                未响应
+                            </view> -->
+                </view>
+                <view class="book-applier">
+                    <!-- <view class="left">
+                        <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                    </view>
+                    <view class="right">
+                        <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.add_at}}
+                    </view> -->
+                    天数：{{book.keep_time}}
+                </view>
+                <view class="operate-box">
+                    <form name='pushMsgFm' report-submit="true" data-bookid="{{book.book_id}}" data-canshareid="{{book.can_share_id}}" bindsubmit="editKeepTime">
+                        <button form-type="submit" class="refuse">
+                            编辑
+                        </button>
+                    </form>
+                    <form name='pushMsgFm' report-submit="true" data-canshareid="{{book.can_share_id}}" bindsubmit="downLine">
+                        <button form-type="submit" class="agree">
+                            下线
+                        </button>
+                    </form>
+                </view>
+            </view>
+            <view class="clear-both"></view>
+        </view>
+        </template>
+    <!-- 下线模板 -->
+
+    <!-- 上线模板 -->
+    <template name="bookOnLine">
+        <view class="book-tmp" bindtap="detail">
+            <image src="{{book.book_image}}" class="book-image"></image>
+            <view class="book-info">
+                <view class="book-apply-name">
+                    {{book.book_name}}
+                    <!-- <view class="subtitle">
+                                未响应
+                            </view> -->
+                            
+                </view>
+                <view class="book-applier">
+                    <!-- <view class="left">
+                        <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.userName?book.userName:book.nickName}}
+                    </view>
+                    <view class="right">
+                        <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.add_at}}
+                    </view> -->
+                    天数：{{book.keep_time}}
+                </view>
+                <view class="operate-box">
+                     <form name='pushMsgFm' report-submit="true" data-canshareid="{{book.can_share_id}}" bindsubmit="editKeepTime">
+                        <button form-type="submit" class="refuse">
+                            编辑
+                        </button>
+                    </form>
+                    <form name='pushMsgFm' report-submit="true" data-canshareid="{{book.can_share_id}}" bindsubmit="onLine">
+                        <button form-type="submit" class="agree">
+                            上线
+                        </button>
+                    </form> 
+                </view>
+            </view>
+            <view class="clear-both"></view>
+        </view>
+        </template>
+    <!-- 上线模板 -->
+
+<!-- 操作 管理图书页面 -->
+
+<!-- 自营点借入页面 -->
+    <!-- 借出模板 -->
+        <template name="pilotBorrowIn">
+            <view class="book-tmp" bindtap="detail">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info"  bindtap="pilotBorrowIn" data-sharingId="{{book.sharing_id}}" data-type="{{book.type}}" data-canShareID ="{{book.can_share_id}}">
+                    <view class="book-name" style="height:30%">{{book.book_name}}—{{book.writer}}</view>
+                    <view class="book-applier">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.pilot_name?book.pilot_name:'自营点'}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/location.png" style="width:15px;height:15px;"></image> {{book.location}}
+                        </view>
+                    </view>
+                    <view class="operate-box">
+                        <form name='pushMsgFm' report-submit="true" data-canshareid="{{book.can_share_id}}" data-sharingid="{{book.sharing_id}}" bindsubmit="cancelBorrow" wx:if="{{book.if_loan == 0}}">
+                            <button form-type="submit" class="refuse">
+                                取消借书
+                            </button>
+                        </form>
+                        <form name='pushMsgFm' report-submit="true" data-sharingid="{{book.sharing_id}}" data-phonenum="{{book.phoneNumber}}">
+                            <view class="right" style="line-height:30px;font-size:12px;width:100px;float:right;">
+                                <image src="../../images/time.png" style="width:15px;height:15px;"></image> {{book.agree_at}}
+                            </view>
+                        </form> 
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 借出模板 -->
+
+    <!-- 取消模板 -->
+        <template name="pilotCancelBorrowIn">
+            <view class="book-tmp" bindtap="detail" wx:if="{{book.if_refuse== 1}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info" style="position: relative;">
+                    <view class="book-name" >
+                        {{book.book_name}}—{{book.writer}}
+                    </view>
+                    <view class="seal">
+                        <image src="../../images/cancel.png"></image>
+                    </view>
+                    <view class="book-author">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.pilot_name?book.pilot_name:'显示失败'}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/location.png" style="width:15px;height:15px;"></image> {{book.location}}
+                        </view>
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 取消模板结束 -->
+
+    <!-- 完成模板 -->
+        <template name="pilotFinishBorrowIn">
+            <view class="book-tmp" bindtap="detail" wx:if="{{book.if_refuse== 0 && book.if_return ==1}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info" style="position: relative;">
+                    <view class="book-name" >
+                        {{book.book_name}}—{{book.writer}}
+                    </view>
+                    <view class="seal">
+                        <image src="../../images/finish.png"></image>
+                    </view>
+                    <view class="book-author">
+                        <view class="left">
+                            <image src="../../images/applier.png" style="width:15px;height:15px;"></image> {{book.pilot_name?book.pilot_name:'显示失败'}}
+                        </view>
+                        <view class="right">
+                            <image src="../../images/location.png" style="width:15px;height:15px;"></image> {{book.location}}
+                        </view>
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 取消模板结束 -->
+
+<!-- 自营点借入页面 -->
+
+<!-- 我看过的 页面 -->
+    <!-- 列表页面 -->
+        <template name="haveSeen">
+            <view class="book-tmp" bindtap="openCardDetail" data-bookId="{{book.book_id}}" data-type="{{book.type}}" data-canShareID ="{{book.can_share_id}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-name">{{book.book_name}}</view>
+                    <view class="book-applier">
+                        {{book.writer}}
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 列表页面 -->
+<!-- 我看过的 页面 -->
+
+<!-- 书单列表页面 -->
+    <!-- 书单列表模板 -->
+        <template name="bookListTemplate">
+            <view class="book-tmp" bindtap="detail" data-bookId="{{book.book_id}}" data-type="{{book.type}}" data-canShareID ="{{book.can_share_id}}">
+                <image src="{{book.book_image}}" class="book-image"></image>
+                <view class="book-info">
+                    <view class="book-name">{{book.book_name}}</view>
+                    <view class="book-applier">
+                        {{book.writer}}
+                    </view>
+                </view>
+                <view class="clear-both"></view>
+            </view>
+        </template>
+    <!-- 书单列表模板 -->
+<!-- 书单列表页面 -->
+
+<!-- 评论列表 -->
+    <template name="commentTemp">
+        <view class="count_down sp1" style="width:100%">
+            <view style="width:100%">
+                <view class="left" style="width:15%">
+                    <image src="{{comment.favicon}}" alt="" style="width:42px;height:42px;border-radius: 20px;margin-top: 5px;margin-left: 8px;"></image>
+                </view>
+                <view class="center" style="float:left;width:85%;padding-top: 0px!important;margin-top: 5px;text-align:left;">
+                    <span class="title" style="padding-left: 5px;">{{comment.nickName}}</span>
+                    <span style="float:right;margin-right:30px;font-size:12px">{{comment.book_content}}分</span>
+                    <!-- <view class='half'>
+                        <block wx:for="{{stars}}">
+                            <image class="star-image" style="left: {{item*80}}rpx" src="{{key3 > item ?(key3-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+                                <view class="item1" style="left:0rpx" data-key="{{item+0.5}}" bindtap="selectLeft3"></view>
+                                <view class="item1" style="left:40rpx" data-key="{{item+1}}" bindtap="selectRight3"></view>
+                            </image>
+                        </block>
+                    </view> -->
+                </view>
+            </view>
+            <view class="comment" style="float: left;font-size: 14px;margin: 10px 5px 15px 10px;text-align: left;">
+                <font color="#aaa">
+                    {{comment.card_content}}
+                </font>
+            </view>
+        </view>
+    </template>
+    
+<!-- 评论列表 -->
+
+<!-- 积分列表 -->
+    <!-- 积分记录 模板-->
+        <template name="integralRecord">
+            <view class="item" style='display: flex;' wx:if="{{record.type == 1}}">
+                <text class="leftText1">
+                    注册、认证
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 2}}">
+                <text class="leftText1">
+                    上传图书
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 3}}">
+                <text class="leftText1">
+                    代为运营
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 4}}">
+                <text class="leftText1">
+                    捐赠图书
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 5}}">
+                <text class="leftText1">
+                    分享
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 6}}">
+                <text class="leftText1">
+                    借书
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>-{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 7}}">
+                <text class="leftText1">
+                    借书流转
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 8}}">
+                <text class="leftText1">
+                    取消借书订单
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 9}}">
+                <text class="leftText1">
+                    邀请好友注册
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+
+            <view class="item" style='display: flex;' wx:if="{{record.type == 91}}">
+                <text class="leftText1">
+                    其他原因
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>+{{record.value}}</view>
+            </view>
+            <view class="item" style='display: flex;' wx:if="{{record.type == 92}}">
+                <text class="leftText1">
+                    其他原因
+                </text>
+                <text class='leftText2'>{{record.add_time}}</text>
+                <view class='rightText'>-{{record.value}}</view>
+            </view>
+        </template>
+    <!-- 积分记录 模板-->
+<!-- 积分列表 -->

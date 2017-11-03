@@ -1,0 +1,136 @@
+<view class="weui-cells__tips" style="font-size: 12px;">
+    <text style="color:red;">提示：</text>代为运营中途不可以退出！否则会出现已经上传过错误
+</view>
+<view class="aui-content">
+    <ul class="aui-timeline">
+        <li>
+            <view class="aui-iconfont aui-bg-info">1</view>
+            <view class="aui-timeline-item">
+                <view class="aui-timeline-body">扫描相应图书</view>
+            </view>
+        </li>
+        <li>
+            <view wx:if="{{hidden>=2}}">
+                <i class="aui-iconfont aui-icon-home aui-bg-info">2</i>
+            </view>
+            <view wx:else>
+                <i class="aui-iconfont aui-icon-home aui-bg-warning">2</i>
+            </view>
+            <view class="aui-timeline-item">
+                <view class="aui-timeline-body">扫描要贴的二维码</view>
+                
+            </view>
+        </li>
+        <li>
+            <view wx:if="{{hidden>=3}}">
+                <i class="aui-iconfont aui-icon-home aui-bg-info">3</i>
+            </view>
+            <view wx:else>
+                <i class="aui-iconfont aui-icon-home aui-bg-warning">3</i>
+            </view>
+            <view class="aui-timeline-item">
+                
+                <view class="aui-timeline-body">把二维码贴到相应的书后</view>
+                
+            </view>
+        </li>
+        <li>
+            <view wx:if="{{hidden>=4}}">
+                <i class="aui-iconfont aui-icon-home aui-bg-info">4</i>
+            </view>
+            <view wx:else>
+                <i class="aui-iconfont aui-icon-home aui-bg-warning">4</i>
+            </view>
+            <view class="aui-timeline-item">
+                
+                <view class="aui-timeline-body">扫描书架二维码</view>
+                
+            </view>
+        </li>
+        <li>
+            <view wx:if="{{hidden>=5}}">
+                <i class="aui-iconfont aui-icon-home aui-bg-info">5</i>
+            </view>
+            <view wx:else>
+                <i class="aui-iconfont aui-icon-home aui-bg-warning">5</i>
+            </view>
+            <view class="aui-timeline-item">
+                
+                <view class="aui-timeline-body">把书放入相应的书架</view>
+                
+            </view>
+        </li>
+
+    </ul>
+</view>
+<view class="classname">
+    <!-- 扫描ISBN -->
+    <view class="container">
+        <button class='operateButton' type="primary" bindtap="screenBook" wx:if="{{hidden == 1}}">扫描ISBN</button>
+
+        <!-- 扫描图书二维码 -->
+        <button class='operateButton' type="primary" bindtap="screenQRcode" wx:elif="{{hidden == 2}}">扫描二维码</button>
+
+
+        <!-- 扫描书架 -->
+
+        <button class='operateButton' type="primary" bindtap="bookcase" wx:elif="{{hidden == 3}}">扫描书架</button>
+    </view>
+</view>
+
+
+
+<!--分类 start-->
+<scroll-view style="height:100%" id="catewrap" scroll-into-view="c2" scroll-y="true" hidden="{{!cateisShow}}">
+    <!-- <view class="close" bindtap="togglePtype" id="closecatelist"></view> -->
+    <!-- <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <text class="cl_ico_checked cl_ico"></text> {{bookInfo.book_name}}
+    </view> -->
+    <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <text style="float:left;width:100px;line-height:47px">适龄</text>
+        <picker bindchange="bindAgeChange" style="width:100px;float:right" value="{{index}}" range="{{array}}">
+            <view class="picker">
+                {{array[ageIndex]}}
+            </view>
+        </picker>
+        <text class="rightText">{{bookInfo.title}}</text>
+    </view>
+    <view id="cateall" bindtap="cateselect" class="cl_list ">
+        <text style="float:left;width:100px;line-height:47px">分类</text>
+        <picker bindchange="bindSortsChange" style="width:100px;float:right" value="{{sortsIndex}}" range="{{sortsNameArray}}">
+            <view class="picker">
+                {{sortsNameArray[sortsIndex]}}
+            </view>
+        </picker>
+    </view>
+    <textarea placeholder="请输入您的感想,填写书评可能会给您带来更多的积分呦" value="{{cardInfo}}" maxlength="-1" class="card_content" bindinput="setContent" />
+    <view class="weui-cells">
+          <view class="weui-cell">
+            <view class="weui-cell__bd">
+              <view class="weui-uploader">
+                <view class="weui-uploader__hd">
+                  <view class="weui-uploader__title">点击可预览选好的图片</view>
+                  <view class="weui-uploader__info">{{imageList.length}}/{{count[countIndex]}}</view>
+                </view>
+                <view class="weui-uploader__bd">
+                  <view class="weui-uploader__files">
+                    <block wx:for="{{imageList}}" wx:for-item="image">
+                      <view class="weui-uploader__file">
+                        <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
+                      </view>
+                    </block>
+                  </view>
+                  <view class="weui-uploader__input-box">
+                    <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+    <button form-type="submit" style="width:95%;margin:0 auto;border-radius:5px;height:50px;background: #FE552E;text-align: center;color:#fff;position:fixed;bottom:0px" bindtap='completeInfo' class="btn">
+        确定
+    </button>
+
+</scroll-view>
+<!--分类 end-->
